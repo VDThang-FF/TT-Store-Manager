@@ -1,0 +1,32 @@
+// Thực hiện style lại main menu
+.main-menu {
+    .main-menu-box {
+        color: $B-Dark;
+        border: none;
+        width: 100%;
+
+        .item-menu-box {
+            height: 48px;
+            padding: 0 10px;
+            border-radius: 4px;
+
+            a {
+                text-decoration: none;
+            }
+
+            &:hover {
+                cursor: pointer;
+                background-color: $BG-Gray-Hover;
+            }
+
+
+            .icon-menu{
+                font-size: 20px;
+            }
+        }
+
+        .active-link-exact {
+            background-color: $BG-Gray-Dark;
+        }
+    }
+}

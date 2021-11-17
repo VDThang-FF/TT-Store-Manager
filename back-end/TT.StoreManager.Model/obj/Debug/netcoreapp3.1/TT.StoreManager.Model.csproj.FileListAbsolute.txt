@@ -1,0 +1,13 @@
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\bin\Debug\netcoreapp3.1\TT.StoreManager.Model.deps.json
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\bin\Debug\netcoreapp3.1\TT.StoreManager.Model.dll
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\bin\Debug\netcoreapp3.1\TT.StoreManager.Model.pdb
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\obj\Debug\netcoreapp3.1\TT.StoreManager.Model.csproj.AssemblyReference.cache
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\obj\Debug\netcoreapp3.1\TT.StoreManager.Model.GeneratedMSBuildEditorConfig.editorconfig
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\obj\Debug\netcoreapp3.1\TT.StoreManager.Model.AssemblyInfoInputs.cache
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\obj\Debug\netcoreapp3.1\TT.StoreManager.Model.AssemblyInfo.cs
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\obj\Debug\netcoreapp3.1\TT.StoreManager.Model.csproj.CoreCompileInputs.cache
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\obj\Debug\netcoreapp3.1\TT.StoreManager.Model.dll
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\obj\Debug\netcoreapp3.1\TT.StoreManager.Model.pdb
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\bin\Debug\netcoreapp3.1\TT.StoreManager.Model.runtimeconfig.json
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\bin\Debug\netcoreapp3.1\TT.StoreManager.Model.runtimeconfig.dev.json
+C:\Developers\Store Manager\back-end\TT.StoreManager.Model\obj\Debug\netcoreapp3.1\TT.StoreManager.Model.genruntimeconfig.cache
