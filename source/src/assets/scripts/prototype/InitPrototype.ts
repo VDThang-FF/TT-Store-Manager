@@ -12,7 +12,21 @@ class InitPrototype {
      * created by vdthang 18.11.2021
      */
     initPrototypeString(app: App) {
-        app.config.globalProperties.$demo = 1;
+        // Check null or empty string
+        app.config.globalProperties.$IsNullOrEmpry = (source) => {
+            if (source == null || source == undefined || source.trim() == '')
+                return true;
+            return false;
+        };
+
+        // Check email validate
+        app.config.globalProperties.$IsEmail = (source) => {
+            if (source == null || source == undefined || source.trim() == '')
+                return false;
+
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(source).toLowerCase());
+        };
     }
 
     /**

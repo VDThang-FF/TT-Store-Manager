@@ -4,8 +4,9 @@
 
 <script setup lang="ts">
 import GetPrototype from '@/assets/scripts/prototype/GetPrototype';
+const Prototype = new GetPrototype();
+console.log(Prototype.globals().$IsNullOrEmpry("abd"));
 
-console.log(new GetPrototype().globals());
 </script>   
 
 <style scoped>
