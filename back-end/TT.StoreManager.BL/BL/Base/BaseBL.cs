@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,13 +36,143 @@ namespace TT.StoreManager.BL
         public async Task<BaseResponse> Insert<T>(BaseModel data, Type modelType) where T : class
         {
             var res = new BaseResponse();
-            var table = Context.Set<T>();
-            BeforeSave(ref data);
-            table.Add(data as T);
-            var effect = await Context.SaveChangesAsync();
-            if (effect <= 0)
-                return res.OnError(Code.ErrorCRUD, userMessage: "Thêm thất bại", devMessage: "Lỗi effect save change");
+            var resValidate = ValidateRequest(data, modelType);
+            if (!resValidate.Success)
+                return resValidate;
 
+            BeforeSave(ref data);
+
+            IDbContextTransaction transaction = null;
+            try
+            {
+                transaction = Context.Database.BeginTransaction();
+
+                // Trước khi commit dữ liệu
+                var resBeforeCM = BeforeCommit(data, modelType, transaction);
+                if (!resBeforeCM.Success)
+                {
+                    transaction.Rollback();
+                    return resBeforeCM;
+                }
+
+                // Bắt đầu commit dữ liệu
+                var table = Context.Set<T>();
+                table.Add(data as T);
+                var effect = await Context.SaveChangesAsync();
+                if (effect <= 0)
+                {
+                    transaction.Rollback();
+                    return res.OnError(Code.ErrorCRUD, userMessage: "Thêm thất bại", devMessage: "Lỗi effect save change");
+                }
+
+                // Sau khi commit dữ liệu
+                var resAfterCM = AfterCommit(data, modelType, data.GetPrimaryKeyValue());
+                if (!resAfterCM.Success)
+                {
+                    transaction.Rollback();
+                    return resAfterCM;
+                }
+
+                transaction.Commit();
+                res.OnSuccess(data.GetPrimaryKeyValue());
+            }
+            catch (Exception ex)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    transaction.Dispose();
+                }
+                throw ex;
+            }
+            finally
+            {
+                if (transaction != null)
+                    transaction.Dispose();
+            }
+
+            return res;
+        }
+
+        /// <summary>
+        /// Hàm thực hiện cập nhật dữ liệu
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        /// created by vdthang 18.11.2021
+        public async Task<BaseResponse> Update<T>(BaseModel data, Type modelType) where T : class
+        {
+            var res = new BaseResponse();
+            var resValidate = ValidateRequest(data, modelType);
+            if (!resValidate.Success)
+                return resValidate;
+
+            BeforeSave(ref data);
+
+            IDbContextTransaction transaction = null;
+            try
+            {
+                transaction = Context.Database.BeginTransaction();
+
+                // Trước khi commit dữ liệu
+                var resBeforeCM = BeforeCommit(data, modelType, transaction);
+                if (!resBeforeCM.Success)
+                {
+                    transaction.Rollback();
+                    return resBeforeCM;
+                }
+
+                // Bắt đầu commit dữ liệu
+                var table = Context.Set<T>();
+                table.Update(data as T);
+                var effect = await Context.SaveChangesAsync();
+                if (effect < 0)
+                {
+                    transaction.Rollback();
+                    return res.OnError(Code.ErrorCRUD, userMessage: "Cập nhật thất bại", devMessage: "Lỗi effect save change");
+                }
+
+                // Sau khi commit dữ liệu
+                var resAfterCM = AfterCommit(data, modelType, data);
+                if (!resAfterCM.Success)
+                {
+                    transaction.Rollback();
+                    return resAfterCM;
+                }
+
+                transaction.Commit();
+                res.OnSuccess(data.GetPrimaryKeyValue());
+            }
+            catch (Exception ex)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    transaction.Dispose();
+                }
+                throw ex;
+            }
+            finally
+            {
+                if (transaction != null)
+                    transaction.Dispose();
+            }
+
+            return res;
+        }
+
+        /// <summary>
+        /// Hàm thực hiện validate request khi thực hiện CRUD
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        /// created by vdthang 18.11.2021
+        public BaseResponse ValidateRequest(BaseModel data, Type modelType)
+        {
+            var res = new BaseResponse();
             return res;
         }
 
@@ -63,6 +194,34 @@ namespace TT.StoreManager.BL
                 model.ModifiedBy = "System";
                 model.ModifiedDate = DateTime.Now;
             }
+        }
+
+        /// <summary>
+        /// Hàm thực hiện trước khi commit dữ liệu
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="modelType"></param>
+        /// <param name="transaction"></param>
+        /// <returns></returns>
+        /// created by vdthang 18.11.2021
+        public BaseResponse BeforeCommit(BaseModel data, Type modelType, IDbContextTransaction transaction = null)
+        {
+            var res = new BaseResponse();
+            return res;
+        }
+
+        /// <summary>
+        /// Hàm thực hiện sau khi commit dữ liệu
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="modelType"></param>
+        /// <param name="resultCRUD"></param>
+        /// <returns></returns>
+        /// created by vdthang 18.11.2021
+        public BaseResponse AfterCommit(BaseModel data, Type modelType, object resultCRUD = null)
+        {
+            var res = new BaseResponse();
+            return res;
         }
     }
 }

@@ -78,5 +78,30 @@ namespace TT.StoreManager.Controllers
 
             return res;
         }
+
+        /// <summary>
+        /// API thực hiện cập nhật 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// created by vdthang 17.11.2021
+        [HttpPut("")]
+        public async Task<BaseResponse> Update([FromBody] T request)
+        {
+            var res = new BaseResponse();
+
+            try
+            {
+                var model = (BaseModel)TConvert.DeserializeObj(request, CurrentModelType);
+                model.State = Enumarations.ModelState.Insert;
+                res = await BL.Insert<T>(model, CurrentModelType);
+            }
+            catch (Exception ex)
+            {
+                res.OnError(Code.Exception, devMessage: ex.Message, exception: ex);
+            }
+
+            return res;
+        }
     }
 }
