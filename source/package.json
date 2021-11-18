@@ -2,11 +2,14 @@
   "name": "source",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "serve": "vite preview"
+    "dev": "vite --mode development",
+    "prod": "vue-tsc --noEmit && vite build --mode production",
+    "prev": "vite preview --mode preview"
   },
   "dependencies": {
+    "@google-cloud/kms": "^2.10.0",
+    "axios": "^0.24.0",
+    "fast-crc32c": "^2.0.0",
     "primeflex": "^2.0.0",
     "primeicons": "^5.0.0",
     "primevue": "^3.8.2",

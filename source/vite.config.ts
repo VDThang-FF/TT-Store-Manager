@@ -10,7 +10,7 @@ const projectRootDir = resolve(__dirname);
 export default defineConfig({
   plugins: [
     vue(),
-    alias()  
+    alias()
   ],
   resolve: {
     alias: {
