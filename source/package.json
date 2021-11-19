@@ -8,12 +8,16 @@
   },
   "dependencies": {
     "@google-cloud/kms": "^2.10.0",
+    "accounting": "^0.4.1",
     "axios": "^0.24.0",
     "fast-crc32c": "^2.0.0",
+    "moment": "^2.29.1",
+    "numeral": "^2.0.6",
     "primeflex": "^2.0.0",
     "primeicons": "^5.0.0",
     "primevue": "^3.8.2",
     "vue": "^3.2.16",
+    "vue-number-format": "^1.2.0",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2"
   },

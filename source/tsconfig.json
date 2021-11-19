@@ -1,11 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@": [
-        "/src"
-      ]
-    },
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
@@ -18,7 +12,17 @@
     "lib": [
       "esnext",
       "dom"
-    ]
+    ],
+    "baseUrl": ".",
+    "rootDir": "src",
+    "paths": {
+      "@": [
+        "/src"
+      ],
+      "@/": [
+        "/src"
+      ]
+    },
   },
   "include": [
     "src/**/*.ts",
