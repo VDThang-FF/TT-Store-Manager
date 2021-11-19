@@ -13,6 +13,7 @@
     "fast-crc32c": "^2.0.0",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
+    "object-deep-compare": "^1.2.0",
     "primeflex": "^2.0.0",
     "primeicons": "^5.0.0",
     "primevue": "^3.8.2",

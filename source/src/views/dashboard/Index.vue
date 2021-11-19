@@ -8,7 +8,7 @@ import ENUM from '@/enums';
 
 const Prototype = new GetPrototype();
 if (Prototype != null)
-    console.log(Prototype.globals().$FormatMoney(-1000000, ",", ".", 2, false));
+    console.log(Prototype.globals().$CompareObj({ name: "Thắng", des: { demo: "Năm" } }, { name: "Thắng", des: { demo: "Năm" } }, true, false));
 
 </script>   
 
