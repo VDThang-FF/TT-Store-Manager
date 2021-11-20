@@ -55,7 +55,18 @@ namespace TT.StoreManager.Model
         /// created by vdthang 17.11.2021
         public object GetPrimaryKeyValue()
         {
-            return this.GetType().GetFieldValue(typeof(KeyAttribute));
+            return this.GetFieldValue(typeof(KeyAttribute));
+        }
+
+        /// <summary>
+        /// Hàm thực hiện lấy tên table trong db của model
+        /// </summary>
+        /// <returns></returns>
+        /// created by vdthang 19.11.2021
+        public string GetTableName()
+        {
+            var config = (ConfigTableAttribute)this.GetType().GetCustomAttributes(typeof(ConfigTableAttribute), false).FirstOrDefault();
+            return config?.TableName;
         }
     }
 }

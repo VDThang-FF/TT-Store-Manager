@@ -26,5 +26,15 @@ namespace TT.StoreManager.BL
         /// <returns></returns>
         /// created by vdthang 18.11.2021
         Task<BaseResponse> Update<T>(BaseModel data, Type modelType) where T : class;
+
+        /// <summary>
+        /// Interface thực hiện lấy dữ liệu phân trang
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="request"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        /// created by vdthang 19.11.2021
+        Task<BaseResponse> GetPaging<T>(PagingRequest request, Type modelType) where T : class;
     }
 }

@@ -66,12 +66,12 @@ namespace TT.StoreManager.Model
         /// <param name="attribute"></param>
         /// <returns></returns>
         /// created by vdthang 17.11.2021
-        public static object GetFieldValue(this Type type, Type attribute)
+        public static object GetFieldValue(this BaseModel model, Type attribute)
         {
-            var props = type.GetProperties();
+            var props = model.GetType().GetProperties();
             var find = props?.FirstOrDefault(p => p.GetCustomAttributes(attribute, true) != null);
             if (find != null)
-                return find.GetValue(type);
+                return find.GetValue(model);
 
             return null;
         }

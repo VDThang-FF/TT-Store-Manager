@@ -191,26 +191,5 @@ namespace TT.StoreManager.Model
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-        /// <summary>
-        /// Hàm thực hiện lấy table từ context để làm việc
-        /// </summary>
-        /// <param name="modelType"></param>
-        /// <returns></returns>
-        /// created by vdthang 17.11.2021
-        public object GetTable(Type modelType)
-        {
-            switch (modelType.Name)
-            {
-                case "Product":
-                    return this.Product;
-                case "Stock":
-                    return this.Stock;
-                case "Supplier":
-                    return this.Supplier;
-                default:
-                    throw new NullReferenceException("Khởi tạo table bị null!");
-            }
-        }
     }
 }

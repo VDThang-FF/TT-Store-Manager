@@ -26,6 +26,14 @@ namespace TT.StoreManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("TCors", builder =>
+            {
+                builder.AllowAnyMethod()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowAnyOrigin();
+            }));
+
             // Register Swagger
             services.AddSwaggerGen(c =>
             {
@@ -37,6 +45,7 @@ namespace TT.StoreManager
                 x =>
                 {
                     x.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    x.JsonSerializerOptions.PropertyNamingPolicy = null;
                 });
 
             AddInjection(ref services);
@@ -45,10 +54,7 @@ namespace TT.StoreManager
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseCors("TCors");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

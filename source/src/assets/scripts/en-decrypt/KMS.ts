@@ -1,7 +1,7 @@
 import { KeyManagementServiceClient } from '@google-cloud/kms';
 const crc32c = require('fast-crc32c');
 
-class TTSecure {
+class KMS {
     projectId: string = 'TTStoreManager';
     locationId: string = 'vp-tt-01';
     idRing: string = 'kr-01';
@@ -12,9 +12,6 @@ class TTSecure {
 
     genKeyRingId: string = '';
     genKeyId: string = '';
-
-    constructor() {
-    }
 
     /**
      * Hàm thực hiện tạo Key Ring
@@ -103,4 +100,4 @@ class TTSecure {
     }
 }
 
-export default TTSecure;
+export default KMS;

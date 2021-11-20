@@ -3,12 +3,20 @@
 </template>
 
 <script setup lang="ts">
-import GetPrototype from '@/assets/scripts/prototype/GetPrototype';
-import ENUM from '@/enums';
+import TPrototype from '@/assets/scripts/prototype/GetPrototype';
+import ProductAPI from '@/apis/implement/Product';
+import PagingRequest from '@/models/requests/PagingRequest';
 
-const Prototype = new GetPrototype();
-if (Prototype != null)
-    console.log(Prototype.globals().$CompareObj({ name: "Thắng", des: { demo: "Năm" } }, { name: "Thắng", des: { demo: "Năm" } }, true, false));
+var request = new PagingRequest();
+request.Filter = [
+    {
+        Prefix: null,
+        PropName: "name",
+        Condition: "=&all",
+        Value: null
+    }
+]
+new ProductAPI("Products").getPaging(request);
 
 </script>   
 

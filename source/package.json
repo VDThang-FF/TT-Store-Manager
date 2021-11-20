@@ -10,6 +10,7 @@
     "@google-cloud/kms": "^2.10.0",
     "accounting": "^0.4.1",
     "axios": "^0.24.0",
+    "crypto-js": "^4.1.1",
     "fast-crc32c": "^2.0.0",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",

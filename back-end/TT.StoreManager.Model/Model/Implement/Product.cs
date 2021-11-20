@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TT.StoreManager.Model
 {
+    [ConfigTableAttribute("product")]
     public partial class Product : BaseModel
     {
         [Key]

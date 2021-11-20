@@ -1,6 +1,10 @@
 import { getCurrentInstance } from "vue";
 
-class GetPrototype {
+class TPrototype {
+    constructor() {
+
+    }
+
     /**
      * Hàm thực hiện lấy toàn bộ global properties
      * @returns 
@@ -38,4 +42,4 @@ class GetPrototype {
     }
 }
 
-export default GetPrototype;
+export default TPrototype;

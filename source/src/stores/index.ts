@@ -22,7 +22,9 @@ export const store = createStore<State>({
 
     actions: {
 
-    }
+    },
+
+    modules:{}
 });
 
 export function useStore() {

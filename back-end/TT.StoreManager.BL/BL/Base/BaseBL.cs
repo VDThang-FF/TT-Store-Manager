@@ -1,6 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TT.StoreManager.Model;
@@ -42,10 +46,13 @@ namespace TT.StoreManager.BL
 
             BeforeSave(ref data);
 
-            IDbContextTransaction transaction = null;
+            DbConnection connection = null;
+            DbTransaction transaction = null;
             try
             {
-                transaction = Context.Database.BeginTransaction();
+                connection = Context.Database.GetDbConnection();
+                connection.Open();
+                transaction = connection.BeginTransaction();
 
                 // Trước khi commit dữ liệu
                 var resBeforeCM = BeforeCommit(data, modelType, transaction);
@@ -73,8 +80,8 @@ namespace TT.StoreManager.BL
                     return resAfterCM;
                 }
 
-                transaction.Commit();
                 res.OnSuccess(data.GetPrimaryKeyValue());
+                transaction.Commit();
             }
             catch (Exception ex)
             {
@@ -89,6 +96,12 @@ namespace TT.StoreManager.BL
             {
                 if (transaction != null)
                     transaction.Dispose();
+
+                if (connection != null && connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
             }
 
             return res;
@@ -111,10 +124,13 @@ namespace TT.StoreManager.BL
 
             BeforeSave(ref data);
 
-            IDbContextTransaction transaction = null;
+            DbConnection connection = null;
+            DbTransaction transaction = null;
             try
             {
-                transaction = Context.Database.BeginTransaction();
+                connection = Context.Database.GetDbConnection();
+                connection.Open();
+                transaction = connection.BeginTransaction();
 
                 // Trước khi commit dữ liệu
                 var resBeforeCM = BeforeCommit(data, modelType, transaction);
@@ -142,8 +158,8 @@ namespace TT.StoreManager.BL
                     return resAfterCM;
                 }
 
-                transaction.Commit();
                 res.OnSuccess(data.GetPrimaryKeyValue());
+                transaction.Commit();
             }
             catch (Exception ex)
             {
@@ -158,6 +174,12 @@ namespace TT.StoreManager.BL
             {
                 if (transaction != null)
                     transaction.Dispose();
+
+                if (connection != null && connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
             }
 
             return res;
@@ -204,7 +226,7 @@ namespace TT.StoreManager.BL
         /// <param name="transaction"></param>
         /// <returns></returns>
         /// created by vdthang 18.11.2021
-        public BaseResponse BeforeCommit(BaseModel data, Type modelType, IDbContextTransaction transaction = null)
+        public BaseResponse BeforeCommit(BaseModel data, Type modelType, DbTransaction transaction = null)
         {
             var res = new BaseResponse();
             return res;
@@ -216,12 +238,42 @@ namespace TT.StoreManager.BL
         /// <param name="data"></param>
         /// <param name="modelType"></param>
         /// <param name="resultCRUD"></param>
+        /// <param name="transaction"></param>
         /// <returns></returns>
         /// created by vdthang 18.11.2021
-        public BaseResponse AfterCommit(BaseModel data, Type modelType, object resultCRUD = null)
+        public BaseResponse AfterCommit(BaseModel data, Type modelType, object resultCRUD = null, DbTransaction transaction = null)
         {
             var res = new BaseResponse();
             return res;
+        }
+
+        /// <summary>
+        /// Hàm thực hiện lấy dữ liệu phân trang
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="request"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        /// created by vdthang 19.11.2021
+        public async Task<BaseResponse> GetPaging<T>(PagingRequest request, Type modelType) where T : class
+        {
+            var res = new BaseResponse();
+
+            var sqlDataQuery = TSQL.BuildPagingData(request, modelType);
+            var sqlTotalQuery = TSQL.BuildTotalPagingData(request, modelType);
+            var table = Context.Set<T>();
+            var pageData = TSQL.ExeceuteReaderCommandTextSync(new List<Type>() { modelType }, sqlDataQuery);
+            var totalData = TSQL.ExecuteScalarCommandTextSync(sqlTotalQuery);
+
+            await Task.WhenAll(pageData, totalData);
+
+            var pagingResponse = new PagingResponse()
+            {
+                PageData = TConvert.Deserialize<List<Product>>(TConvert.Serialize(pageData.Result.FirstOrDefault())),
+                Total = Convert.ToInt32(totalData.Result)
+            };
+
+            return res.OnSuccess(pagingResponse);
         }
     }
 }

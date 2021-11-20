@@ -94,7 +94,30 @@ namespace TT.StoreManager.Controllers
             {
                 var model = (BaseModel)TConvert.DeserializeObj(request, CurrentModelType);
                 model.State = Enumarations.ModelState.Insert;
-                res = await BL.Insert<T>(model, CurrentModelType);
+                res = await BL.Update<T>(model, CurrentModelType);
+            }
+            catch (Exception ex)
+            {
+                res.OnError(Code.Exception, devMessage: ex.Message, exception: ex);
+            }
+
+            return res;
+        }
+
+        /// <summary>
+        /// API thực hiện lấy dữ liệu phân trang
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// created by vdthang 19.11.2021
+        [HttpPost("Paging")]
+        public async Task<BaseResponse> GetPaging([FromBody] PagingRequest request)
+        {
+            var res = new BaseResponse();
+
+            try
+            {
+                res = await BL.GetPaging<T>(request, CurrentModelType);
             }
             catch (Exception ex)
             {
